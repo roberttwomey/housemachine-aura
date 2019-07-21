@@ -1,0 +1,10 @@
+[Unit]
+Description=Runs python based event logger after boot
+After=syslog.target network.target
+
+[Service]
+Type=forking
+ExecStart=/home/pi/housemachine/python/launch_blackbox.sh
+
+[Install]
+WantedBy=multi-user.target
