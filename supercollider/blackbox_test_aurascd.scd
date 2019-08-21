@@ -26,7 +26,7 @@ m = NetAddr("192.168.1.20", 9999);
 // NetAddr.broadcastFlag = true;
 // m = NetAddr("192.168.1.255", 9999);
 
-
+(
 ~messages = [
 	"the front door is opened",
 	"the front door has closed",
@@ -50,7 +50,7 @@ m = NetAddr("192.168.1.20", 9999);
 	"the baby is tired",
 	"the dog is eating dinner",
 	"the dog is drinking water"];
-
+)
 m.sendMsg('/'++~messages.choose()++' ');
 m.sendMsg('/'++$\n)
 
@@ -65,7 +65,8 @@ m.sendMsg(~sensornames.choose());
 (
 ~playbackRoutine = Routine {
 	inf.do {
-    m.sendMsg(~sensornames.choose());
+		// m.sendMsg(~sensornames.choose());
+		m.sendMsg('/'++~messages.choose());
 	// Wait half second before saying we're done
 	0.7.rrand(4.0).postln.wait;
 		// "done".postln;
