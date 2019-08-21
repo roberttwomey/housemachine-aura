@@ -4,4 +4,4 @@
 
 ```sudo nano /boot/config.txt```
 
-add ```lcd_rotate=2``` to the top of the file.
+add ```display_hdmi_rotate=2``` to the top of the file.
