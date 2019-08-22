@@ -76,6 +76,59 @@ m.sendMsg(~sensornames.choose());
 
 ~playbackRoutine.stop()
 
+//--------------
+
+// ansi color references
+// https://bluesock.org/~willkg/dev/ansi.html
+
+// 0	normal display
+// 1	bold
+// 4	underline (mono only)
+// 5	blink on
+// 7	reverse video on
+// 8	nondisplayed (invisible
+
+
+//  -- foreground --
+// 30	black
+// 31	red
+// 32	green
+// 33	yellow
+// 34	blue
+// 35	magenta
+// 36	cyan
+// 37	white
+
+// -- background --
+// 40	black
+// 41	red
+// 42	green
+// 43	yellow
+// 44	blue
+// 45	magenta
+// 46	cyan
+// 47	white
+
+// to print colors do:
+// "\x1b[1;"++color_code_above++"m"+message+"\x1b[0m"
+
+
+// color changing
+m.sendMsg("/log", "good alert message: (red on black) ", "41");
+m.sendMsg("/log", "good sensor reading: ", "37;42");
+m.sendMsg("/log", "and some more text", "0");
+
+(
+~nums = (0..9,30..37,40..47);
+~nums.do{ |i| m.sendMsg("/log", "X", i.asString) };
+)
+for (0, 47, { |i| m.sendMsg("/log", "X", i.asString)});
+
+(0..5)
+// --------------
+
+m.sendMsg("/\\033[0;32mGREEN\\033[0m", 0)
+m.sendMsg("\x1b[0;37;40mTEST\x1b[0m", 0)
 
 m.sendMsg("/led", 7, 1); // on
 m.sendMsg("/led", 7, 0); // on

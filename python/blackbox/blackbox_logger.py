@@ -64,7 +64,7 @@ def get_ip_address(ifname):
     return socket.inet_ntoa(fcntl.ioctl(
         s.fileno(),
         0x8915,  # SIOCGIFADDR
-        struct.pack('256s', ifname[:15])
+        struct.pack('256s', bytes(ifname[:15]))
     )[20:24])
 
 def OSCString(next):
@@ -106,7 +106,7 @@ def sendOSCMsg(msg):
             if _transmit(len_big_endian) and _transmit(binary):
                 return True
             return False            
-        except socket.error, e:
+        except socket.error as e:
             if e[0] == errno.EPIPE: # broken pipe
                 return False
             raise e
@@ -252,7 +252,7 @@ def closeLogfile():
 tty = os.open("/dev/tty1", os.O_RDWR)
 # os.write(tty, "this is fun")
 # os.system("clear")
-os.write(tty, "\033c")
+os.write(tty, b'\033c')
 
 # get IP for host
 # from https://stackoverflow.com/a/166520
@@ -276,7 +276,7 @@ bsock.bind((bcastAddr, UDP_PORT))
 bsock.setblocking(0)
 
 print("Listening for UDP messages at",UDP_IP,"port",UDP_PORT)
-print("Listening for Broadcast messages at",bcastAddr,"port",UDP_PORT)
+# print("Listening for Broadcast messages at",bcastAddr,"port",UDP_PORT)
 
 if doPrint:
     openPrinter()
@@ -285,8 +285,8 @@ if doLog:
     openLogfile()
 
 lasttarget = ""
-socks = [servsock, bsock]
-
+# socks = [servsock, bsock]
+socks = [servsock]
 while True:
     try:
         # listen to multiple sockets
@@ -303,34 +303,37 @@ while True:
             address = data[0]
             
             # toggle printing
-            if address == "/print":
-                if data[1] == 1:
-                    doPrint = True
-                    openPrinter()
-                else:
-                    doPrint = False
-                    closePrinter()
+            # if address == "/print":
+            #     if data[1] == 1:
+            #         doPrint = True
+            #         openPrinter()
+            #     else:
+            #         doPrint = False
+            #         closePrinter()
 
-            # toggle logging
-            if address == "/log":
-                if data[1] == 1:
-                    if doLog == False:
-                        doLog = True
-                        openLogfile()
-                else:
-                    doLog = False
-                    closeLogfile()
+            # # toggle logging
+            # if address == "/log":
+            #     if data[1] == 1:
+            #         if doLog == False:
+            #             doLog = True
+            #             openLogfile()
+            #     else:
+            #         doLog = False
+            #         closeLogfile()
 
             if doShow:
                 # sys.stdout.write(datastr)
                 if time.time() - lastSensorTime > timeToNewline:
                     if not bWroteNewline:
                         os.write(tty, "\n")
+                        print ""
                         sys.stdout.flush()                    
                         bWroteNewline = True
 
                 
-                os.write(tty, address[1:]+" ")
+                if len(address)>0:
+                    os.write(tty, address[1:]+" ")
+                    print address[1:],
 
                 lastSensorTime = time.time()
                 bWroteNewline = False
