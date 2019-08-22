@@ -1,6 +1,15 @@
 # housemachine-aura
 
 __OS__
+
 Install recent [Raspbian Buster Lite](https://www.raspberrypi.org/downloads/raspbian/)
 
 __Environment__
+
+
+Boot rpi in portrait mode
+
+```sudo nano /boot/config.txt```
+
+add ```display_hdmi_rotate=2``` to the top of the file.
+
