@@ -69,7 +69,16 @@ cmake -D CMAKE_BUILD_TYPE=RELEASE \
     -D OPENCV_ENABLE_NONFREE=ON \
     -D INSTALL_PYTHON_EXAMPLES=OFF \
     -D BUILD_EXAMPLES=OFF ..
+```
 
+Run the build in a screen session:
+
+```bash
+screen -S buildopencv
+```
+
+_Make it!_
+```bash
 make -j3
 sudo make install
 sudo ldconfig
