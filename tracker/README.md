@@ -16,7 +16,7 @@ sudo apt-get install git
 sudo apt-get install netatalk
 sudo apt-get install screen
 git clone https://github.com/roberttwomey/housemachine-aura
-ln -s housemachine-aura housmachine
+ln -s housemachine-aura housemachine
 ```
 
 # Install Opencv
