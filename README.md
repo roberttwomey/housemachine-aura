@@ -7,7 +7,7 @@ see [videonode](videonode/)
 ## Camera Tracking
 see [tracker](tracker/)
 ## CumulativeMotion Trails
-see [python/trails](python/trails)
+see [motiontrails](motiontrails/)
 ## Physical Sensors
 see [sensors](sensors)
 
