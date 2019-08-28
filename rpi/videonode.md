@@ -20,6 +20,7 @@ git clone https://github.com/roberttwomey/housemachine-aura
 
 1. clone software: 
 ```bash
+cd housemachine-aura/software
 git clone https://github.com/billw2/pikrellcam
 ```
 
@@ -31,7 +32,7 @@ cd pikrellcam
 
 3. Copy custom config file:
 ```bash
-cp pikrellcam.conf ~/.pikrellcam
+cp ~/housemachine-aura/rpi/pikrellcam.conf ~/.pikrellcam
 ```
 
 4. Reboot
