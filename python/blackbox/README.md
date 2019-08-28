@@ -16,7 +16,9 @@ _To boot rpi in portrait mode_:
 
 2. add ```display_hdmi_rotate=2``` to the top of the file.
 
-3. Reboot. 
+3. save and exit. 
+
+4. Reboot. 
 
 __Set Up Persistent Service__
 
