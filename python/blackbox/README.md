@@ -36,18 +36,18 @@ WantedBy=multi-user.target
 
 2. copy the service file to _/etc/init/_:
 
-```bash
+```console
 sudo cp blackbox.service /lib/systemd/system
 ```
 
 3. enable and start
 
-```bash
+```console
 sudo systemctl enable blackbox.service
 sudo systemctl start blackbox.service
 ```
 
 4. stop
-```bash
+```console
 sudo systemctl stop blackbox.service
 ```
