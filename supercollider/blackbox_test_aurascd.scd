@@ -116,7 +116,9 @@ m.sendMsg(~sensornames.choose());
 // color changing
 m.sendMsg("/log", "good alert message: (red on black) ", "41");
 m.sendMsg("/log", "good sensor reading: ", "37;42");
-m.sendMsg("/log", "and some more text", "0");
+m.sendMsg("/log", "good amelia notification: (white on blue)", "37;44");
+
+
 
 (
 ~nums = (0..9,30..37,40..47);
