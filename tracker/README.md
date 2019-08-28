@@ -22,6 +22,7 @@ ln -s housemachine-aura housemachine
 # Install Opencv
 
 Following [these instructions](https://raspberrypi.stackexchange.com/questions/95982/how-to-install-opencv-on-raspbian-stretch)
+[these](https://github.com/youngsoul/rpi_opencv_install/blob/master/pi_install_cv2_410.sh) might be better
 
 _Update and Install Requirements_
 
