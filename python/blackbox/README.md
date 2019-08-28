@@ -1,4 +1,4 @@
-# housemachine-aura Text Log Display
+# Text Log Display
 
 __Hardware__
 
