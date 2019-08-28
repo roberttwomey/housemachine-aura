@@ -1,6 +1,6 @@
 # housemachine-aura
-Repo of code and setup for my contribution to Project Amelia, Sept 2019
-## Log / Text Display
+Repo of code and setup for my contribution to Project Amelia, Sept 2019, Pittsburgh, PA
+## Text Display
 see [python/blackbox](python/blackbox)
 ## Overhead Camera
 see [python/overhead](python/overhead)
