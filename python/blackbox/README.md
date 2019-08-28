@@ -1,13 +1,14 @@
-# housemachine-aura
+# housemachine-aura Text Log Display
+
 __Hardware__
 
-Raspberry Pi 3, preferrably with wired ethernet connection. 
+Raspberry Pi 3, preferrably with wired ethernet connection connected to HDTV in portrait mode (vertical orientation)
 
 __OS__
 
 Install recent [Raspbian Buster Lite](https://www.raspberrypi.org/downloads/raspbian/)
 
-__Environment__
+__Configure Environment__
 
 _To boot rpi in portrait mode_:
 
@@ -17,9 +18,9 @@ _To boot rpi in portrait mode_:
 
 3. Reboot. 
 
-__Set Up Service__
+__Set Up Persistent Service__
 
-1. Create a service file like the following, `blackbox.service`:
+1. Create a service file like the following, _blackbox.service_:
 ```
 [Unit]
 Description=Runs python based audio recorder after boot
@@ -33,7 +34,7 @@ ExecStart=/home/pi/housemachine/python/launch_audionode.sh
 WantedBy=multi-user.target
 ```
 
-2. copy the service file to `/etc/init/`:
+2. copy the service file to _/etc/init/_:
 
 ```bash
 sudo cp blackbox.service /lib/systemd/system
