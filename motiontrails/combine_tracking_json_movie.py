@@ -94,8 +94,8 @@ def main():
     width = args.width
     height = args.height
     outwidth = args.outwidth
-    outfile = infiles[0].split(".")[0]+"_trails.mp4"
     infiles = args.files
+    outfile = infiles[0].split(".")[0]+"_trails.mp4"
                 
     # colors
     WHITE = (255, 255, 255)
