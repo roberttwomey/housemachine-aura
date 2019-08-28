@@ -3,7 +3,7 @@ Repo of code and setup for my contribution to Project Amelia, Sept 2019, Pittsbu
 ## Text Display
 see [python/blackbox](python/blackbox)
 ## Overhead Videonode
-see [rpi/videonode.md](rpi/videonode.md)
+see [videonode](videonode/)
 ## (Near-)Live Camera Tracking
 see [python/overhead](python/overhead)
 ## CumulativeMotion Trails
