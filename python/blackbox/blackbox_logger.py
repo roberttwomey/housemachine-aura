@@ -11,20 +11,11 @@ import codecs
 import os
 
 """
-before using, you need to add yourself to the lp group:
-
-ls -ls /dev/usb
-sudo usermod -a -G lp pi
-logout
-
-login
-
-now your user can use the /dev/usb/lp0 device (which belongs to group lp)
-    
-
 This program:
-receive OSC messages
+receives a variety of OSC messages and displays them to screen in a text console
 
+valid addresses:
+- 
 display to screem
 log to file
 print on LPT printer through usb to parallel adapter
@@ -326,15 +317,22 @@ while True:
                 if time.time() - lastSensorTime > timeToNewline:
                     if not bWroteNewline:
                         os.write(tty, "\n")
-                        print ""
+                        # print ""
                         sys.stdout.flush()                    
                         bWroteNewline = True
 
-                
                 if len(address)>0:
-                    os.write(tty, address[1:]+" ")
-                    print address[1:],
 
+                    if address.startswith("/red"):
+                        os.write(tty, '\x1b[1;31m' + address.lstrip("/red") + '\x1b[0m')
+                    elif address.startswith("/log"):
+                        os.write(tty, '\x1b[1;'+data[2]+'m'+data[1] +'\x1b[0m')
+                    else:
+                        os.write(tty, address[1:])
+                        # print address[1:],
+
+                    # os.write(tty, "\x1b[0;37;40mTEST\x1b[0m)")
+                    
                 lastSensorTime = time.time()
                 bWroteNewline = False
 
