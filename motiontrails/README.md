@@ -1,3 +1,12 @@
+# Setup
+
+Requires pylab, etc.
+
+# Generate an image from tracked json
+
+```bash
+python render_tracking_json.py 1920 1080 ~/housemachine-aura/data/json/*.json
+```
 
 # Raspberry Pi node for displaying tracked videos
 
