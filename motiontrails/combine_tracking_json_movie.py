@@ -94,6 +94,7 @@ def main():
     width = args.width
     height = args.height
     outwidth = args.outwidth
+    outheight = args.outheight
     infiles = args.files
     outfile = infiles[0].split(".")[0]+"_trails.mp4"
                 
