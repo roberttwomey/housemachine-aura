@@ -46,19 +46,21 @@ def main():
     # infiles = args.files
     # outfile = infiles[0].split(".")[0]+"_trails.avi"
 
-    outfile = "test.avi"
+    outfile = "test2.avi"
     width = 640
     height = 480
-    outwidth = 1920
-    outheight = 1080
+    outwidth = 640
+    outheight = 480
 
     # colors
     WHITE = (255, 255, 255)
     BLUE = (255, 0, 0)
     BLACK = (0, 0, 0)
 
+    color = BLACK
+
     # blank image 
-    img = np.zeros((outwidth, outheight, 3), np.uint8)
+    img = np.zeros((outheight, outwidth, 3), np.uint8)
 
     cv2.rectangle(img, (0,0), (outwidth, outheight), WHITE, cv2.FILLED)
 
@@ -68,11 +70,11 @@ def main():
     except e:
         print(e)
 
-    curr = np.array(0, 0)
+    curr = np.array([0, 0])
     last = curr
     for i in range(1000):
 
-        curr = (np.random(width), np.random(height))
+        curr = (np.random.random_sample()*width, np.random.random_sample()*height)
 
         cv2.line(img, (np.float32(last[0]), np.float32(last[1])), (np.float32(curr[0]), np.float32(curr[1])), (color), 1, cv2.LINE_AA)
 

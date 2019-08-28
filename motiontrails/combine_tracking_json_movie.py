@@ -104,7 +104,8 @@ def main():
     BLACK = (0, 0, 0)
 
     # blank image 
-    img = np.zeros((outwidth, outheight, 3), np.uint8)
+    # img = np.zeros((outwidth, outheight, 3), np.uint8)
+    img = np.zeros((outheight, outwidth, 3), np.uint8)
 
     cv2.rectangle(img, (0,0), (outwidth, outheight), WHITE, cv2.FILLED)
 
