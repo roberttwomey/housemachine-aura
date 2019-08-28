@@ -109,7 +109,10 @@ def main():
     cv2.rectangle(img, (0,0), (outwidth, outheight), WHITE, cv2.FILLED)
 
     fourcc = 0
-    out = cv2.VideoWriter(outfile, fourcc, 15.0, (int(outwidth), int(outheight)))
+    try: 
+        out = cv2.VideoWriter(outfile, fourcc, 15.0, (int(outwidth), int(outheight)))
+    except e:
+        print(e)
 
     for infname in infiles:
         
@@ -141,6 +144,7 @@ def main():
                     cv2.line(img, (np.float32(last[0]), np.float32(last[1])), (np.float32(curr[0]), np.float32(curr[1])), (color), 1, cv2.LINE_AA)
 
                     try:
+                        print(".")
                         out.write(img)
                     except:
                         print("Error: video frame did not write")
