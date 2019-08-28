@@ -25,12 +25,12 @@ __Set Up Persistent Service__
 1. Create a service file like the following, _blackbox.service_:
 ```
 [Unit]
-Description=Runs python based audio recorder after boot
+Description=Runs python based event logger after boot
 After=syslog.target network.target
 
 [Service]
 Type=forking
-ExecStart=/home/pi/housemachine/python/launch_audionode.sh
+ExecStart=/home/pi/housemachine/textlog/launch_blackbox.sh
 
 [Install]
 WantedBy=multi-user.target
