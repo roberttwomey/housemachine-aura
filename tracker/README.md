@@ -50,6 +50,7 @@ git clone https://github.com/Itseez/opencv_contrib.git
 _Install numpy_
 
 ```bash
+sudo apt-get install python3-pip
 pip3 install numpy
 ```
 
