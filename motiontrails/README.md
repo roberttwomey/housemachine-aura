@@ -2,6 +2,10 @@
 
 Requires pylab, etc.
 
+```bash
+sudo apt-get install python-numpy python-scipy python-matplotlib
+```
+
 # Generate an image from tracked json
 
 ```bash
