@@ -96,7 +96,7 @@ def main():
     outwidth = args.outwidth
     outheight = args.outheight
     infiles = args.files
-    outfile = infiles[0].split(".")[0]+"_trails.mp4"
+    outfile = infiles[0].split(".")[0]+"_trails.avi"
                 
     # colors
     WHITE = (255, 255, 255)
@@ -108,6 +108,7 @@ def main():
 
     cv2.rectangle(img, (0,0), (outwidth, outheight), WHITE, cv2.FILLED)
 
+    fourcc = 0
     out = cv2.VideoWriter(outfile, fourcc, 15.0, (int(outwidth), int(outheight)))
 
     for infname in infiles:
