@@ -40,20 +40,20 @@ def ReadJSONDrawingData(filename):
     return shapes
     # return d
 
-def mapToScreen(point, minx, maxx, miny, maxy):
+def mapToScreen(point, minx, maxx, miny, maxy, outwidth):
 
     width = maxx - minx
     height = maxy - miny
 
     if width > height:
-        scale = 800.0 / (width * 1.0)
+        scale = outwidth / (width * 1.0)
         margin = width * 0.0
         # scale = 800.0 / (width * 1.4)
         # margin = width * 0.2
         dominant = width
         
     else:
-        scale = 800.0 / (height * 1.0)
+        scale = outwidth / (height * 1.0)
         margin = width * 0.0
         # scale = 800.0 / (height * 1.4)
         # margin = height * 0.2
@@ -64,8 +64,9 @@ def mapToScreen(point, minx, maxx, miny, maxy):
     
     offset = np.array((-xoff, -yoff)) * scale
 
+    # print scale, offset
     mappedpoint = (point * scale + offset)
-    mappedpoint[1] = 800.0 - mappedpoint[1]
+    # mappedpoint[1] = outwidth - mappedpoint[1]
     return mappedpoint
 
  
@@ -82,30 +83,40 @@ def main():
     #infiles = [ "/Users/rtwomey/Pictures/Convex Mirror storefront/work/traced.txt"]
     # handle command line arguments
     parser = argparse.ArgumentParser(description='Render drawing points as png (argparse library is required)')
-    parser.add_argument('width', type=float, default=512)
-    parser.add_argument('height', type=float, default = 512)
-    parser.add_argument('infile',
-            help='output of json to text command (.txt)', nargs='+')
+    parser.add_argument('width', type=float, default=640)
+    parser.add_argument('height', type=float, default = 480)
+    parser.add_argument('outwidth', type=int, default=800)
+    parser.add_argument('outheight', type=int, default=800)
+    # parser.add_argument('outfile', default='trails.mp4')
+    parser.add_argument('files', nargs='*', help='glob of input files')
     
     args = parser.parse_args()
     width = args.width
     height = args.height
-    infile = args.infile
+    outwidth = args.outwidth
+    outfile = infiles[0].split(".")[0]+"_trails.mp4"
+    infiles = args.files
                 
     # colors
     WHITE = (255, 255, 255)
     BLUE = (255, 0, 0)
+    BLACK = (0, 0, 0)
 
     # blank image 
-    img = np.zeros((800, 800, 3), np.uint8)
+    img = np.zeros((outwidth, outheight, 3), np.uint8)
 
-    for infname in infile:
+    cv2.rectangle(img, (0,0), (outwidth, outheight), WHITE, cv2.FILLED)
+
+    out = cv2.VideoWriter(outfile, fourcc, 15.0, (int(outwidth), int(outheight)))
+
+    for infname in infiles:
         
+        points = []
+
         # read in input file (drawing reording)
         shapes = ReadJSONDrawingData(infname)
         
-        cv2.rectangle(img, (0,0), (800, 800), WHITE, cv2.FILLED)
-        print shapes
+        # print shapes
 
         for shape in shapes:
 
@@ -114,24 +125,32 @@ def main():
             firstPoint = True
 
             for point in shape:
-                print point
-                curr = mapToScreen(point, 0, width, 0, height)
+                # print point
+                curr = mapToScreen(point, 0, width, 0, height, outwidth)
                 
                 # pen down
-                color = BLUE
+                # color = BLUE
+                color = BLACK
 
                 if firstPoint:
                     firstPoint = False
                 else:
-                    cv2.line(img, (int(last[0]), int(last[1])), (int(curr[0]), int(curr[1])), (color), 1)
+                    # cv2.line(img, (int(last[0]), int(last[1])), (int(curr[0]), int(curr[1])), (color), 1)
+                    cv2.line(img, (np.float32(last[0]), np.float32(last[1])), (np.float32(curr[0]), np.float32(curr[1])), (color), 1, cv2.LINE_AA)
+
+                    try:
+                        out.write(img)
+                    except:
+                        print("Error: video frame did not write")
 
                 last = curr
 
-        # save out image image
-        outfname = infname.split(".")[0]+".png"            
-        print "Saving image {0}".format(outfname)
-        cv2.imwrite(outfname, img)
-
+    # save out image image
+    outfname = infiles[0].split(".")[0]+"_black.png"            
+    # outfname = infiles[0].split(".")[0]+".png"            
+    print "Saving image {0}".format(outfname)
+    cv2.imwrite(outfname, img)
+    out.release()
 
 if __name__ == "__main__":
     main()
