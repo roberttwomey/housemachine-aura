@@ -4,8 +4,8 @@ Repo of code and setup for my contribution to Project Amelia, Sept 2019, Pittsbu
 see [python/blackbox](python/blackbox)
 ## Overhead Videonode
 see [videonode](videonode/)
-## (Near-)Live Camera Tracking
-see [python/overhead](python/overhead)
+## Camera Tracking
+see [tracker](tracker/)
 ## CumulativeMotion Trails
 see [python/trails](python/trails)
 ## Physical Sensors
