@@ -14,6 +14,7 @@ cat ~/.ssh/id_rsa.pub | ssh pi@tracker.local 'cat >> .ssh/authorized_keys'
 ```bash
 sudo apt-get install git
 sudo apt-get install netatalk
+sudo apt-get install screen
 git clone https://github.com/roberttwomey/housemachine-aura
 ln -s housemachine-aura housmachine
 ```
