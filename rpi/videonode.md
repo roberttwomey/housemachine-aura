@@ -10,7 +10,7 @@ git clone https://github.com/billw2/pikrellcam
 ```
 
 2. install:
-```bash
+```sh
 cd pikrellcam
 ./install_pikrellcam.sh
 ```
