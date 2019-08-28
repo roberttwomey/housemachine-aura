@@ -25,7 +25,7 @@ def ReadJSONDrawingData(filename):
 
     shapes=[]
     i=0
-    for trail in d:
+    for trail in d['trails']:
         thisshape = []
         for point in trail:
             # print cv[:2]
