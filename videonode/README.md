@@ -32,7 +32,7 @@ cd pikrellcam
 
 3. Copy custom config file:
 ```bash
-cp ~/housemachine-aura/rpi/pikrellcam.conf ~/.pikrellcam
+cp ~/housemachine-aura/videonode/config/* ~/.pikrellcam
 ```
 
 4. Reboot
