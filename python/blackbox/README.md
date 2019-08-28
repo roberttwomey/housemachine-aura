@@ -9,11 +9,44 @@ Install recent [Raspbian Buster Lite](https://www.raspberrypi.org/downloads/rasp
 
 __Environment__
 
-Boot rpi in portrait mode
+_To boot rpi in portrait mode_:
 
-```sudo nano /boot/config.txt```
+1. ```sudo nano /boot/config.txt```
 
-add ```display_hdmi_rotate=2``` to the top of the file.
+2. add ```display_hdmi_rotate=2``` to the top of the file.
+
+3. Reboot. 
 
 __Set Up Service__
 
+1. Create a service file like the following, `blackbox.service`:
+```
+[Unit]
+Description=Runs python based audio recorder after boot
+After=syslog.target network.target
+
+[Service]
+Type=forking
+ExecStart=/home/pi/housemachine/python/launch_audionode.sh
+
+[Install]
+WantedBy=multi-user.target
+```
+
+2. copy the service file to `/etc/init/`:
+
+```bash
+sudo cp blackbox.service /lib/systemd/system
+```
+
+3. enable and start
+
+```bash
+sudo systemctl enable blackbox.service
+sudo systemctl start blackbox.service
+```
+
+4. stop
+```bash
+sudo systemctl stop blackbox.service
+```
