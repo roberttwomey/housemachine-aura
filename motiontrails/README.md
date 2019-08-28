@@ -9,7 +9,7 @@ sudo apt-get install python-numpy python-scipy python-matplotlib
 # Generate an image from tracked json
 
 ```bash
-python render_tracking_json.py 1920 1080 ~/housemachine-aura/data/json/*.json
+python combine_tracking_json.py 640 480 1920 ~/housemachine-aura/data/json/*.json
 ```
 
 # Raspberry Pi node for displaying tracked videos
