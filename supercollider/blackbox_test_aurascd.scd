@@ -21,7 +21,7 @@ m.sendMsg("/getnodeinfo");
 // ===============
 
 
-// photon stuff
+// blackbox address
 m = NetAddr("192.168.1.20", 9999);
 // NetAddr.broadcastFlag = true;
 // m = NetAddr("192.168.1.255", 9999);
