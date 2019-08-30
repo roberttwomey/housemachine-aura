@@ -11,7 +11,7 @@ The two video files are:
 
 # Real Time / Amelia's Room
 ## Text Display
-see [python/blackbox](python/blackbox)
+see [textlog](textlog)
 ## Overhead Videonode
 see [videonode](videonode/)
 ## Camera Tracking

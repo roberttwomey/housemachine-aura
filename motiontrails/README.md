@@ -3,7 +3,7 @@
 Requires pylab, etc.
 
 ```bash
-sudo apt-get install python-numpy python-scipy python-matplotlib
+sudo apt-get install python-numpy python-scipy python-matplotlib ffmpeg
 ```
 
 # Generate an image from tracked json
