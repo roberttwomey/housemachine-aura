@@ -15,12 +15,12 @@ This program:
 receives a variety of OSC messages and displays them to screen in a text console
 
 valid addresses:
-- 
-display to screem
-log to file
-print on LPT printer through usb to parallel adapter
+/amelia
+/sensor
+/alert
+/log - general purpose
 
-rtwomey@ysu.edu 2017
+rtwomey@ucsd.edu	2019
 
 """
 
@@ -323,26 +323,21 @@ while True:
 
                 if len(address)>0:
 
-                    if address.startswith("/red"):
-                        os.write(tty, '\x1b[1;31m' + address.lstrip("/red") + '\x1b[0m')
+                    if address.startswith("/amelia"):
+                    	os.write(tty, '\x1b[1;37;44m'+data[1] +'\x1b[0m')
+                    elif address.startswith("/alert"):
+                        os.write(tty, '\x1b[1;41m'+data[1] +'\x1b[0m')
+                    elif address.startswith("/sensor"):
+                        os.write(tty, '\x1b[1;37;42m'+data[1] +'\x1b[0m')
                     elif address.startswith("/log"):
                         os.write(tty, '\x1b[1;'+data[2]+'m'+data[1] +'\x1b[0m')
                     else:
                         os.write(tty, address[1:])
-                        # print address[1:],
-
-                    # os.write(tty, "\x1b[0;37;40mTEST\x1b[0m)")
                     
                 lastSensorTime = time.time()
                 bWroteNewline = False
 
-                # sys.stdout.write(address[1:]+" ")
-
-                # for d in data:
-                #     sys.stdout.write(str(d)+" ")
-                # sys.stdout.write("\n")
                 sys.stdout.flush()
-
 
             if doPrint:
                 if time.time() - lastPrintTime > quiescentTime:
@@ -351,12 +346,7 @@ while True:
                         printer.flush()                    
                         bPrintedNewline = True
 
-                # printer.write(datastr)
                 printer.write(str(data[0][1:])+" ")
-                # for d in data:
-                #     printer.write(str(d)+" ")
-                # printer.write("\n")
-                # printer.write('\n')
                 printer.flush()
                 lastPrintTime = time.time()
                 bPrintedNewline = False
