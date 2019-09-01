@@ -3,9 +3,9 @@
 ### !/usr/local/bin/python
 
 '''
-bg subtraction example
+bg subtraction from overhead video
 
-rtwomey@ysu.edu 2017
+rtwomey@ucsd.edu 2019
 '''
 import numpy as np
 import cv2
@@ -79,8 +79,8 @@ if __name__ == '__main__':
 	# kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE,(15,15))
 
 	showMask = False
-	fullResolution = True
-	# fullResolution = False
+	# fullResolution = True
+	fullResolution = False
 
 	cap = cv2.VideoCapture(infile)
 
@@ -223,7 +223,6 @@ if __name__ == '__main__':
 			(newcnts, areas) = sort_by_area(cnts)
 
 			for i in range(len(newcnts)):
-			# for i in range(1):
 				cnt = newcnts[i]
 				area = areas[i]
 				
@@ -232,7 +231,6 @@ if __name__ == '__main__':
 				# radius = int(radius)
 				# cv2.circle(frame, center, radius, (255, 0, 0), 3)
 
-
 				if area > minBlobSize and area < maxBlobSize:
 					if fullResolution:
 						largecnt = []
@@ -240,6 +238,7 @@ if __name__ == '__main__':
 							largepoint = point / scalef
 							# print point, largepoint
 							largecnt.append(largepoint)
+							
 						largecnt = np.array(largecnt)
 						# print cnt, largecnt	
 							#= np.array([point/scalef for point in cnt])
@@ -270,12 +269,6 @@ if __name__ == '__main__':
 
 					center = (cx, cy)
 					# print center
-
-					# cv2.putText(frame, str(area), center, cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0) );
-					# if firstFrame[i] == True:
-					# 	firstFrame[i] = False
-					# else:
-					# 	cv2.line(trails, (int(lastx[i]), int(lasty[i])), (int(x), int(y)), (0, 0, 255), 1)
 
 					foundTrail = False
 
@@ -322,7 +315,6 @@ if __name__ == '__main__':
 				else:
 					# reduced size
 					cv2.line(dataframe, (np.float32(pts[i-1][0]), np.float32(pts[i-1][1])), (np.float32(pts[i][0]), np.float32(pts[i][1])), (0, 0, 255), thickness, cv2.LINE_AA)
-
 
 		# # make colored overlay
 		# colthresh = cv2.cvtColor(thresh, cv2.COLOR_GRAY2BGR)
