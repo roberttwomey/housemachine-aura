@@ -93,7 +93,7 @@ if __name__ == '__main__':
 
 	# mask off area outside of circular region
 	circlemask = np.zeros((outheight, outwidth), np.uint8)
-	cv2.circle(circlemask, (outwidth/2, outheight/2), 280, (255, 255, 255), -1)
+	cv2.circle(circlemask, (int(outwidth/2), int(outheight/2)), 280, (255, 255, 255), -1)
 
 	# unwarp fisheye
 	# cx = outwidth/2.0
@@ -165,12 +165,13 @@ if __name__ == '__main__':
 	f = 0
 	while(1):
 		f = f + 1
+
 		ret, frame = cap.read()
 
 		if frame is None:
 			break
-		# outputframe = cv2.zeros()
-		outputframe = cv2.resize(frame, (outwidth,outheight))
+
+		outputframe = cv2.resize(frame, (outwidth, outheight))
 
 		maskedframe = cv2.bitwise_and(outputframe, outputframe, mask = circlemask)
 
@@ -211,18 +212,18 @@ if __name__ == '__main__':
 						# cv2.drawContours(frame, [cnt], 0, (64, 255, 0), 3)
 						cv2.drawContours(frame, [contour], 0, (0, 255, 0), 3)
 						# cv2.drawContours(outputframe, [contour], 0, (0, 255, 0), 3)
-					else:
-						largecnt = []
-						for point in contour:
-							largepoint = point / scalef
-							# print point, largepoint
-							largecnt.append(largepoint)
+					# else:
+					# 	largecnt = []
+					# 	for point in contour:
+					# 		largepoint = point / scalef
+					# 		# print point, largepoint
+					# 		largecnt.append(largepoint)
 
-						largecnt = np.array(largecnt)
-						contour = np.array(largecnt).reshape((-1,1,2)).astype(np.int32)
-						# cv2.drawContours(frame, [cnt], 0, (127, 255, 0), 6)
-						# cv2.drawContours(frame, [cnt], 0, (64, 255, 0), int(width/213))
-						cv2.drawContours(frame, [contour], 0, (0, 255, 0), int(width/213))
+					# 	largecnt = np.array(largecnt)
+					# 	contour = np.array(largecnt).reshape((-1,1,2)).astype(np.int32)
+					# 	# cv2.drawContours(frame, [cnt], 0, (127, 255, 0), 6)
+					# 	# cv2.drawContours(frame, [cnt], 0, (64, 255, 0), int(width/213))
+					# 	cv2.drawContours(frame, [contour], 0, (0, 255, 0), int(width/213))
 
 					# perimeter = cv2.arcLength(cnt,True)
 
@@ -236,21 +237,24 @@ if __name__ == '__main__':
 
 					foundTrail = False
 
-					for trail in trails:
+					for i, trail in enumerate(trails):
 						if len(trail) == 0:
 							trail.appendleft(center)
 							foundTrail = True
+							# print("added to zero length {0}".format(i))
 							break
 
 						dist = np.linalg.norm(np.array(trail[0])-np.array(center))
 
 						if dist < searchRadius:
 							trail.appendleft(center)
+							# print("added to close trail {0}".format(i))
 							foundTrail = True
 
 					if not foundTrail:
 						trails.append(deque(maxlen=10000))
 						trails[-1].appendleft(center)
+						# print("created new trail {0}".format(i))
 
 
 		# masked = cv2.bitwise_and(outputframe, outputframe, mask=fgmask)
@@ -260,12 +264,12 @@ if __name__ == '__main__':
 		# trailsmask = cv2.cvtColor(trails, cv2.COLOR_BGR2GRAY)
 		# ret, thresh = cv2.threshold(trailsmask, 0, 255, cv2.THRESH_BINARY)
 		# frame = cv2.bitwise_and(frame, frame, mask=thresh)
-
-		for pts in trails:
-			for i in xrange(1, len(pts)):
+		print("\t\t",len(trails))
+		for trail in trails:
+			for i in range(1, len(trail)):
 				# if either of the tracked points are None, ignore
 				# them
-				if pts[i - 1] is None or pts[i] is None:
+				if trail[i - 1] is None or trail[i] is None:
 					continue
 
 				# otherwise, compute the thickness of the line and
@@ -273,7 +277,7 @@ if __name__ == '__main__':
 				thickness = 1#int(np.sqrt(100 / float(i + 1)) * 2.5)
 				
 				# draw trails on output frame
-				cv2.line(outputframe, (np.float32(pts[i-1][0]), np.float32(pts[i-1][1])), (np.float32(pts[i][0]), np.float32(pts[i][1])), (0, 0, 255), thickness, cv2.LINE_AA)
+				cv2.line(frame, (np.float32(trail[i-1][0]), np.float32(trail[i-1][1])), (np.float32(trail[i][0]), np.float32(trail[i][1])), (0, 0, 255), thickness, cv2.LINE_AA)
 
 				# if doDownsample:
 					# full size
@@ -324,7 +328,7 @@ if __name__ == '__main__':
 		paths = []
 		for trail in trails:
 			thistrail = []
-			for i in xrange(1, len(trail)):
+			for i in range(1, len(trail)):
 				# if any of the tracked points are None, ignore them
 				thistrail.append((trail[i]))
 			paths.append(thistrail)
