@@ -74,7 +74,13 @@ if __name__ == '__main__':
 
 	cap = cv2.VideoCapture(infile)
 
+	
 	# get input file parameters
+	fps = cap.get(cv2.CAP_PROP_FPS)      # OpenCV2 version 2 used "CV_CAP_PROP_FPS"
+	frame_count = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+	duration = frame_count/fps
+
+
 	width = cap.get(3)
 	height = cap.get(4)
 
@@ -96,7 +102,7 @@ if __name__ == '__main__':
 	outwidth = int(outputsize)
 	scalef = float(outputsize) / float(width)
 	outheight = int(scalef * height)
-	print(outwidth, outheight)
+	print(outwidth, outheight, duration)
 
 	# mask off area outside of circular region
 	circlemask = np.zeros((outheight, outwidth), np.uint8)
@@ -335,18 +341,22 @@ if __name__ == '__main__':
 
 	# write out tracked paths as json
 	if doWrite:
+		contents = {}
 		paths = []
 		for trail in trails:
 			thistrail = []
 			for i in range(1, len(trail)):
 				# if any of the tracked points are None, ignore them
-				thistrail.append((trail[i]))
+				thistrail = [trail[i]] + thistrail
 			paths.append(thistrail)
-
+		contents["trails"] = paths
+		contents["duration"] = duration
+		contents["filename"] = infile
 		pathfile = os.path.splitext(outfile)[0]+".json"
 		print("write trails",pathfile)
 		with open(pathfile, 'w') as outfile:
-			json.dump(paths, outfile, indent=2)
+			# json.dump(paths, outfile, indent=2)
+			json.dump(contents, outfile, indent=2)
 
 	cap.release()
 	# del cap

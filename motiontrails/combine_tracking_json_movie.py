@@ -96,7 +96,6 @@ def main():
     outwidth = args.outwidth
     outheight = args.outheight
     infiles = args.files
-    outfile = infiles[0].split(".")[0]+"_trails.avi"
                 
     # colors
     WHITE = (255, 255, 255)
@@ -109,7 +108,9 @@ def main():
 
     cv2.rectangle(img, (0,0), (outwidth, outheight), WHITE, cv2.FILLED)
 
-    fourcc = 0
+    # fourcc = 0
+    fourcc = cv2.VideoWriter_fourcc('a','v','c','1')
+    outfile = infiles[0].split(".")[0]+"_trails.mp4"
     try: 
         out = cv2.VideoWriter(outfile, fourcc, 15.0, (int(outwidth), int(outheight)))
     except e:
@@ -145,7 +146,7 @@ def main():
                     cv2.line(img, (np.float32(last[0]), np.float32(last[1])), (np.float32(curr[0]), np.float32(curr[1])), (color), 1, cv2.LINE_AA)
 
                     try:
-                        print(".")
+                        print(".", end=" ")
                         out.write(img)
                     except:
                         print("Error: video frame did not write")
@@ -155,7 +156,7 @@ def main():
     # save out image image
     outfname = infiles[0].split(".")[0]+"_black.png"            
     # outfname = infiles[0].split(".")[0]+".png"            
-    print "Saving image {0}".format(outfname)
+    print("Saving image {0}".format(outfname))
     cv2.imwrite(outfname, img)
     out.release()
 
