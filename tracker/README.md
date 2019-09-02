@@ -1,5 +1,5 @@
 # Tracker
-Overhead tracking software running headless on pi4. Video files are saved to be played with omxplayer. 
+Overhead tracking software running headless on pi4. Video files are saved to be played with omxplayer. Json files (trails) are transmitted to another machine for generation of cumulative drawing image.
 
 # Setup
 
