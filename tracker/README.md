@@ -1,5 +1,5 @@
 # Tracker
-Overhead tracking software running headless on pi3. Video files are saved and played with omxplayer. 
+Overhead tracking software running headless on pi4. Video files are saved to be played with omxplayer. 
 
 # Setup
 
