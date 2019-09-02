@@ -43,7 +43,7 @@ if __name__ == '__main__':
 	parser.add_argument('--write', default=False, dest='dowrite', action='store_true', help='save tracked image as new video')
 	parser.add_argument('--headless', default=False, dest='doheadless', action='store_true', help='do not display video on screen')
 	parser.add_argument('--undistort', default=False, dest='doundistort', action='store_true', help='undistort circular fisheye')
-	parser.add_argument('--downsample', default=True, dest='dodownsample', action='store_true', help='downsample input video before bgfg segmentation and tracking')
+	parser.add_argument('--noresample', default=True, dest='noresample', action='store_true', help='downsample input video before bgfg segmentation and tracking')
 	parser.add_argument('--outputsize', default=640, type=int, dest='outputsize', help='output width (in pixels)')
 	parser.add_argument('--minblob', default=600.0, type=float, help='minimum blob size to track')
 	# parser.add_argument('--minblob', default=00.0, type=float, help='minimum blob size to track')
@@ -60,7 +60,7 @@ if __name__ == '__main__':
 	doWrite = args.dowrite
 	doHeadless = args.doheadless
 	doUndistort = args.doundistort
-	doDownsample = args.dodownsample
+	noResample = args.noresample
 	outputsize = args.outputsize
 	minBlobSize = args.minblob
 	maxBlobSize = args.maxblob
@@ -72,24 +72,26 @@ if __name__ == '__main__':
 
 	print("Reading", infile)
 
-
 	cap = cv2.VideoCapture(infile)
 
 	# get input file parameters
 	width = cap.get(3)
 	height = cap.get(4)
 
+	if noResample:
+		outputsize = width
+
 	# print cap.get(1), cap.get(2), cap.get(3), cap.get(4)
 	# print width, height
 
 	# calculate output file parameters
-	if doDownsample:
+	if noResample:
+		outwidth = int(width)
+		outheight = int(height)
+	else:
 		outwidth = outputsize
 		scalef = float(outputsize) / float(width)
 		outheight = int(scalef * height)
-	else:
-		outwidth = width
-		outheight = height
 
 	# mask off area outside of circular region
 	circlemask = np.zeros((outheight, outwidth), np.uint8)
@@ -129,7 +131,8 @@ if __name__ == '__main__':
 		# fourcc = cv2.VideoWriter_fourcc(*'XVID')
 		# fourcc = cv2.VideoWriter_fourcc(*'X264')
 		# fourcc = cv2.VideoWriter_fourcc('M','J','P','G')
-		fourcc = 0 # uncompressed avi
+		# fourcc = 0 # uncompressed avi
+		fourcc = cv2.VideoWriter_fourcc('H','2','6','4')
 		out = cv2.VideoWriter(outfile,fourcc, 15.0, (outwidth, outheight))
 
 		# if doDownsample:
@@ -207,11 +210,11 @@ if __name__ == '__main__':
 				if area > minBlobSize and area < maxBlobSize:
 					print("{0}: {1} of {2} contours".format(f, i, len(newcnts)))
 
-					if doDownsample: 
-						# cv2.drawContours(frame, [cnt], 0, (127, 255, 0), 3)
-						# cv2.drawContours(frame, [cnt], 0, (64, 255, 0), 3)
-						cv2.drawContours(frame, [contour], 0, (0, 255, 0), 3)
-						# cv2.drawContours(outputframe, [contour], 0, (0, 255, 0), 3)
+					# cv2.drawContours(frame, [cnt], 0, (127, 255, 0), 3)
+					# cv2.drawContours(frame, [cnt], 0, (64, 255, 0), 3)
+					cv2.drawContours(frame, [contour], 0, (0, 255, 0), 3)
+					# cv2.drawContours(outputframe, [contour], 0, (0, 255, 0), 3)
+
 					# else:
 					# 	largecnt = []
 					# 	for point in contour:
