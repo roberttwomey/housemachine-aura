@@ -43,7 +43,7 @@ if __name__ == '__main__':
 	parser.add_argument('--write', default=False, dest='dowrite', action='store_true', help='save tracked image as new video')
 	parser.add_argument('--headless', default=False, dest='doheadless', action='store_true', help='do not display video on screen')
 	parser.add_argument('--undistort', default=False, dest='doundistort', action='store_true', help='undistort circular fisheye')
-	parser.add_argument('--noresample', default=True, dest='noresample', action='store_true', help='downsample input video before bgfg segmentation and tracking')
+	parser.add_argument('--noresample', default=False, dest='noresample', action='store_true', help='downsample input video before bgfg segmentation and tracking')
 	parser.add_argument('--outputsize', default=640, type=int, dest='outputsize', help='output width (in pixels)')
 	parser.add_argument('--minblob', default=600.0, type=float, help='minimum blob size to track')
 	# parser.add_argument('--minblob', default=00.0, type=float, help='minimum blob size to track')
@@ -85,13 +85,18 @@ if __name__ == '__main__':
 	# print width, height
 
 	# calculate output file parameters
-	if noResample:
-		outwidth = int(width)
-		outheight = int(height)
-	else:
-		outwidth = outputsize
-		scalef = float(outputsize) / float(width)
-		outheight = int(scalef * height)
+	# if noResample:
+	# 	outwidth = int(width)
+	# 	outheight = int(height)
+	# else:
+		# outwidth = outputsize
+		# scalef = float(outputsize) / float(width)
+		# outheight = int(scalef * height)
+
+	outwidth = int(outputsize)
+	scalef = float(outputsize) / float(width)
+	outheight = int(scalef * height)
+	print(outwidth, outheight)
 
 	# mask off area outside of circular region
 	circlemask = np.zeros((outheight, outwidth), np.uint8)
@@ -132,7 +137,8 @@ if __name__ == '__main__':
 		# fourcc = cv2.VideoWriter_fourcc(*'X264')
 		# fourcc = cv2.VideoWriter_fourcc('M','J','P','G')
 		# fourcc = 0 # uncompressed avi
-		fourcc = cv2.VideoWriter_fourcc('H','2','6','4')
+		# fourcc = cv2.VideoWriter_fourcc('H','2','6','4')
+		fourcc = cv2.VideoWriter_fourcc('a','v','c','1')
 		out = cv2.VideoWriter(outfile,fourcc, 15.0, (outwidth, outheight))
 
 		# if doDownsample:
@@ -268,7 +274,7 @@ if __name__ == '__main__':
 		# ret, thresh = cv2.threshold(trailsmask, 0, 255, cv2.THRESH_BINARY)
 		# frame = cv2.bitwise_and(frame, frame, mask=thresh)
 		# print("\t\t",len(trails))
-		
+
 		for trail in trails:
 			for i in range(1, len(trail)):
 				# if either of the tracked points are None, ignore
