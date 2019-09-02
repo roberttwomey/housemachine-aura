@@ -208,7 +208,7 @@ if __name__ == '__main__':
 				area = areas[i]
 
 				if area > minBlobSize and area < maxBlobSize:
-					print("{0}: {1} of {2} contours".format(f, i, len(newcnts)))
+					# print("{0}: {1} of {2} contours".format(f, i, len(newcnts)))
 
 					# cv2.drawContours(frame, [cnt], 0, (127, 255, 0), 3)
 					# cv2.drawContours(frame, [cnt], 0, (64, 255, 0), 3)
@@ -267,7 +267,8 @@ if __name__ == '__main__':
 		# trailsmask = cv2.cvtColor(trails, cv2.COLOR_BGR2GRAY)
 		# ret, thresh = cv2.threshold(trailsmask, 0, 255, cv2.THRESH_BINARY)
 		# frame = cv2.bitwise_and(frame, frame, mask=thresh)
-		print("\t\t",len(trails))
+		# print("\t\t",len(trails))
+		
 		for trail in trails:
 			for i in range(1, len(trail)):
 				# if either of the tracked points are None, ignore
