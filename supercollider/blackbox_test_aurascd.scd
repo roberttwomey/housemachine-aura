@@ -112,11 +112,17 @@ m.sendMsg(~sensornames.choose());
 // to print colors do:
 // "\x1b[1;"++color_code_above++"m"+message+"\x1b[0m"
 
+m = NetAddr("192.168.1.254", 9999)
+m.sendMsg("/amelia", "good amelia message: (white on blue)", "additional information");
+m.sendMsg("/alert", "good alert message: (white on red)", "additional information");
+m.sendMsg("/sensor", "good sensor reading (white on green)", "additional information");
+
 
 // color changing
 m.sendMsg("/log", "good alert message: (red on black) ", "41");
 m.sendMsg("/log", "good sensor reading: ", "37;42");
 m.sendMsg("/log", "good amelia notification: (white on blue)", "37;44");
+
 
 
 
