@@ -5,11 +5,15 @@ inotifywait -m /media/housedata/tracked -e close_write |
         echo "The file '$file' appeared in directory '$path' via '$action'"
         # do something with the file
 
-	#echo "Kill omxplayer"
-	#pid=$(pidof omxplayer)
-	#kill $pid
+	if [[ "$file" =~ .*json$ ]]; then # Does the file end with .xml?
+		echo "Kill omxplayer"
+		killall omxplayer.bin
+        fi
 
-	echo "Play new file"
-	omxplayer $path/$file
+
+	if [[ "$file" =~ .*mp4$ ]]; then
+		echo "Play new file"
+		omxplayer --loop $path/$file
+	fi
     done
 
