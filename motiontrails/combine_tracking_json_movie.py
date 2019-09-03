@@ -26,45 +26,62 @@ def ReadJSONDrawingData(filename):
     shapes=[]
     i=0
     for trail in d['trails']:
-        thisshape = []
+        thisshape = {}
         for point in trail:
             # print cv[:2]
-            thisshape.append(point)#:2])
+            thisshape[point[2]]=point[:2]
 
         # print "***"
         i = i +1
         # print "this poly",poly
-        # shapes.append(thisshape)
-        shapes.append(np.array(thisshape))
+        shapes.append(thisshape)
+        # shapes.append(np.array(thisshape))
 
     return shapes
-    # return d
 
-def mapToScreen(point, minx, maxx, miny, maxy, outwidth):
+def mapToScreen(point, minx, maxx, miny, maxy, outwidth, outheight):
 
     width = maxx - minx
     height = maxy - miny
 
-    if width > height:
-        scale = outwidth / (width * 1.0)
-        margin = width * 0.0
+    xscale = (outwidth/width)
+    yscale = (outheight/height)
+
+    # for project amelia onscreen display
+    margin = 0
+    if xscale < yscale:
+        # fit to width
+        scale = xscale
+        xoff = 0
+        yoff = (outheight - (height * scale))/2.0
+        # scale = outwidth / (width * 1.0)
+        # margin = width * 0.0
         # scale = 800.0 / (width * 1.4)
         # margin = width * 0.2
-        dominant = width
-        
-    else:
-        scale = outwidth / (height * 1.0)
-        margin = width * 0.0
-        # scale = 800.0 / (height * 1.4)
-        # margin = height * 0.2
-        dominant = height
+        # dominant = width
+    else: 
+        # fit to height
+        scale = yscale
+        xoff = (outwidth - (width*scale))/2.0
+        yoff = 0
 
-    xoff = 0 - margin - ((dominant - width) / 2.0)
-    yoff = 0 - margin - ((dominant - height) / 2.0)
+    # else:
+    #     scale = outwidth / (height * 1.0)
+    #     margin = width * 0.0
+    #     # scale = 800.0 / (height * 1.4)
+    #     # margin = height * 0.2
+    #     dominant = height
+
+    # xoff = 0# - margin - ((dominant - width) / 2.0)
+    # yoff = 0# - margin - ((dominant - height) / 2.0)
+    # print(xoff, yoff)
+    # yoff = 0 - margin - (((outwidth * scale)-height) / 2.0)
     
-    offset = np.array((-xoff, -yoff)) * scale
+    # offset = np.array((-xoff, -yoff)) * scale
 
-    # print scale, offset
+    offset = np.array((xoff, yoff))
+
+    # print(scale, offset)
     mappedpoint = (point * scale + offset)
     # mappedpoint[1] = outwidth - mappedpoint[1]
     return mappedpoint
@@ -123,7 +140,7 @@ def main():
         # read in input file (drawing reording)
         shapes = ReadJSONDrawingData(infname)
         
-        # print shapes
+        # print(shapes)
 
         for shape in shapes:
 
@@ -132,8 +149,10 @@ def main():
             firstPoint = True
 
             for point in shape:
-                # print point
-                curr = mapToScreen(point, 0, width, 0, height, outwidth)
+                print(shape[point])
+                exit()
+
+                curr = mapToScreen(point[:2], 0, width, 0, height, outwidth, outheight)
                 
                 # pen down
                 # color = BLUE
@@ -146,7 +165,7 @@ def main():
                     cv2.line(img, (np.float32(last[0]), np.float32(last[1])), (np.float32(curr[0]), np.float32(curr[1])), (color), 1, cv2.LINE_AA)
 
                     try:
-                        print(".", end=" ")
+                        # print(".", end=" ")
                         out.write(img)
                     except:
                         print("Error: video frame did not write")
@@ -158,6 +177,7 @@ def main():
     # outfname = infiles[0].split(".")[0]+".png"            
     print("Saving image {0}".format(outfname))
     cv2.imwrite(outfname, img)
+    print("Writing video to {0}".format(outfile))
     out.release()
 
 if __name__ == "__main__":

@@ -18,6 +18,7 @@ import os
 import json
 import cv2
 
+
 def ReadJSONDrawingData(filename):
 
     with open(filename) as infile:

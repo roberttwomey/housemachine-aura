@@ -106,7 +106,7 @@ if __name__ == '__main__':
 
 	# mask off area outside of circular region
 	circlemask = np.zeros((outheight, outwidth), np.uint8)
-	cv2.circle(circlemask, (int(outwidth/2), int(outheight/2)), 280, (255, 255, 255), -1)
+	cv2.circle(circlemask, (int(outwidth/2), int(outheight/2)), int(outwidth/2), (255, 255, 255), -1)
 
 	# unwarp fisheye
 	# cx = outwidth/2.0
@@ -186,9 +186,9 @@ if __name__ == '__main__':
 		if frame is None:
 			break
 
-		outputframe = cv2.resize(frame, (outwidth, outheight))
+		analysisframe = cv2.resize(frame, (outwidth, outheight))
 
-		maskedframe = cv2.bitwise_and(outputframe, outputframe, mask = circlemask)
+		maskedframe = cv2.bitwise_and(analysisframe, analysisframe, mask = circlemask)
 
 		# frame = cv2.fisheye.undistortImage(frame, K, D=D, Knew=Knew)
 
@@ -222,23 +222,25 @@ if __name__ == '__main__':
 				if area > minBlobSize and area < maxBlobSize:
 					# print("{0}: {1} of {2} contours".format(f, i, len(newcnts)))
 
-					# cv2.drawContours(frame, [cnt], 0, (127, 255, 0), 3)
-					# cv2.drawContours(frame, [cnt], 0, (64, 255, 0), 3)
-					cv2.drawContours(frame, [contour], 0, (0, 255, 0), 3)
-					# cv2.drawContours(outputframe, [contour], 0, (0, 255, 0), 3)
+					if noResample:
+						# cv2.drawContours(frame, [cnt], 0, (127, 255, 0), 3)
+						# cv2.drawContours(frame, [cnt], 0, (64, 255, 0), 3)
+						cv2.drawContours(frame, [contour], 0, (0, 255, 0), 3)
+						# cv2.drawContours(analysisframe, [contour], 0, (0, 255, 0), 3)
 
-					# else:
-					# 	largecnt = []
-					# 	for point in contour:
-					# 		largepoint = point / scalef
-					# 		# print point, largepoint
-					# 		largecnt.append(largepoint)
+					else:
+						largecnt = []
+						for point in contour:
+							largepoint = point / scalef
+							# print point, largepoint
+							largecnt.append(largepoint)
 
-					# 	largecnt = np.array(largecnt)
-					# 	contour = np.array(largecnt).reshape((-1,1,2)).astype(np.int32)
-					# 	# cv2.drawContours(frame, [cnt], 0, (127, 255, 0), 6)
-					# 	# cv2.drawContours(frame, [cnt], 0, (64, 255, 0), int(width/213))
-					# 	cv2.drawContours(frame, [contour], 0, (0, 255, 0), int(width/213))
+						largecnt = np.array(largecnt)
+						contour = np.array(largecnt).reshape((-1,1,2)).astype(np.int32)
+						# cv2.drawContours(frame, [cnt], 0, (127, 255, 0), 6)
+						# cv2.drawContours(frame, [cnt], 0, (64, 255, 0), int(width/213))
+						cv2.drawContours(frame, [contour], 0, (0, 255, 0), int(width/213))
+						# cv2.drawContours(analysisframe, [contour], 0, (0, 255, 0), int(width/213))
 
 					# perimeter = cv2.arcLength(cnt,True)
 
@@ -251,28 +253,31 @@ if __name__ == '__main__':
 					center = (cx, cy)
 
 					foundTrail = False
-
+					newpoint = (cx, cy, f)
 					for i, trail in enumerate(trails):
 						if len(trail) == 0:
-							trail.appendleft(center)
+							trail.appendleft(newpoint)
 							foundTrail = True
 							# print("added to zero length {0}".format(i))
 							break
 
-						dist = np.linalg.norm(np.array(trail[0])-np.array(center))
+						dist = np.linalg.norm(np.array(trail[0][:2])-np.array(center[:2]))
 
 						if dist < searchRadius:
-							trail.appendleft(center)
+							trail.appendleft(newpoint)#center)
 							# print("added to close trail {0}".format(i))
 							foundTrail = True
 
 					if not foundTrail:
 						trails.append(deque(maxlen=10000))
-						trails[-1].appendleft(center)
+						trails[-1].appendleft(newpoint)
 						# print("created new trail {0}".format(i))
+				
+				# else:
+				#	# blob was too small or too big
+				# 	print("too large", area)
 
-
-		# masked = cv2.bitwise_and(outputframe, outputframe, mask=fgmask)
+		# masked = cv2.bitwise_and(analysisframe, analysisframe, mask=fgmask)
 
 		# cv2.addWeighted(trails, 1.0, frame, 0.0, 0.0, frame)
 
@@ -294,6 +299,7 @@ if __name__ == '__main__':
 				
 				# draw trails on output frame
 				cv2.line(frame, (np.float32(trail[i-1][0]), np.float32(trail[i-1][1])), (np.float32(trail[i][0]), np.float32(trail[i][1])), (0, 0, 255), thickness, cv2.LINE_AA)
+				# cv2.line(analysisframe, (np.float32(trail[i-1][0]), np.float32(trail[i-1][1])), (np.float32(trail[i][0]), np.float32(trail[i][1])), (0, 0, 255), thickness, cv2.LINE_AA)
 
 				# if doDownsample:
 					# full size
@@ -301,7 +307,7 @@ if __name__ == '__main__':
 					# cv2.line(frame, (np.float32(pts[i-1][0]), np.float32(pts[i-1][1])), (np.float32(pts[i][0]), np.float32(pts[i][1])), (0, 0, 255), thickness, cv2.LINE_AA)
 				# else:
 					# reduced size
-					# cv2.line(outputframe, (np.float32(pts[i-1][0]), np.float32(pts[i-1][1])), (np.float32(pts[i][0]), np.float32(pts[i][1])), (0, 0, 255), thickness, cv2.LINE_AA)
+					# cv2.line(analysisframe, (np.float32(pts[i-1][0]), np.float32(pts[i-1][1])), (np.float32(pts[i][0]), np.float32(pts[i][1])), (0, 0, 255), thickness, cv2.LINE_AA)
 
 		# # make colored overlay of thresholded shape
 		# colthresh = cv2.cvtColor(thresh, cv2.COLOR_GRAY2BGR)
@@ -312,22 +318,22 @@ if __name__ == '__main__':
 		# 	colthresh = cv2.cvtColor(circlemask, cv2.COLOR_GRAY2BGR)
 		# 	cv2.addWeighted(colthresh, 0.5, frame, 0.5, 0.0, frame)
 
-		# masked = cv2.resize(masked, (outwidth,outheight))
-		# thresh = cv2.resize(thresh, (outwidth,outheight))
-		# fgmask = cv2.resize(fgmask, (outwidth,outheight))
+		thresh = cv2.resize(thresh, (outwidth,outheight))
+		fgmask = cv2.resize(fgmask, (outwidth,outheight))
 
 		# if not fullResolution:
 		# 	# frame = cv2.resize(frame, (outwidth,outheight))
-		# 	frame = cv2.resize(outputframe, (outwidth,outheight))
+		# 	frame = cv2.resize(analysisframe, (outwidth,outheight))
 
 		if not doHeadless:
-			cv2.imshow('tracking',frame)
-			# cv2.imshow('fgbg',fgmask)
-			# cv2.imshow('mask',thresh)
+			cv2.imshow('tracking', frame)
+			cv2.imshow('fgbg',fgmask)
+			cv2.imshow('mask',thresh)
 
 		if doWrite:
 			try:
-				out.write(outputframe)
+				out.write(frame)
+
 			except:
 				print("Error: video frame did not write")
 			# out.write(frame)
