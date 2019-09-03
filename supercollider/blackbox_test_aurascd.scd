@@ -1,6 +1,63 @@
+// Text logger for Project Amelia / Bricolage, Pittsburgh, PA 2019
+//
+// by Robert Twomey, robert@roberttwomey.com
+
 // ===============
-// TEST EVENT RECORDER
+// TEST ANSI COLORED MESSAGES
 // ===============
+
+// connect to text logger rpi
+m = NetAddr("192.168.1.254", 9999)
+
+
+//--------------
+
+// ansi color references, from:
+// https://bluesock.org/~willkg/dev/ansi.html
+
+// 0	normal display
+// 1	bold
+// 4	underline (mono only)
+// 5	blink on
+// 7	reverse video on
+// 8	nondisplayed (invisible
+
+//  -- foreground --
+// 30	black
+// 31	red
+// 32	green
+// 33	yellow
+// 34	blue
+// 35	magenta
+// 36	cyan
+// 37	white
+
+// -- background --
+// 40	black
+// 41	red
+// 42	green
+// 43	yellow
+// 44	blue
+// 45	magenta
+// 46	cyan
+// 47	white
+
+// to print colors do:
+// "\x1b[1;"++color_code_above++"m"+message+"\x1b[0m"
+
+m.sendMsg("/amelia", "amelia:", "(white on blue)", "additional information");
+m.sendMsg("/alert", "alert:", "(white on red)", "additional information");
+m.sendMsg("/sensor", "sensor:", "(white on green)", "additional information", "more information");
+
+# with newline
+m.sendMsg("/sensor", "sensor:", "(white on green)", "additional information", "more information\n");
+
+
+// color changing
+m.sendMsg("/log", "good alert message: (red on black) ", "41");
+m.sendMsg("/log", "good sensor reading: ", "37;42");
+m.sendMsg("/log", "good amelia notification: (white on blue)", "37;44");
+
 
 
 // ===============
@@ -20,6 +77,10 @@ m.sendMsg("/getnodeinfo");
 
 // ===============
 
+
+// ===============
+// TEST TEXTUAL LOG
+// ===============
 
 // blackbox address
 m = NetAddr("192.168.1.20", 9999);
@@ -76,53 +137,10 @@ m.sendMsg(~sensornames.choose());
 
 ~playbackRoutine.stop()
 
-//--------------
 
-// ansi color references
-// https://bluesock.org/~willkg/dev/ansi.html
-
-// 0	normal display
-// 1	bold
-// 4	underline (mono only)
-// 5	blink on
-// 7	reverse video on
-// 8	nondisplayed (invisible
-
-
-//  -- foreground --
-// 30	black
-// 31	red
-// 32	green
-// 33	yellow
-// 34	blue
-// 35	magenta
-// 36	cyan
-// 37	white
-
-// -- background --
-// 40	black
-// 41	red
-// 42	green
-// 43	yellow
-// 44	blue
-// 45	magenta
-// 46	cyan
-// 47	white
-
-// to print colors do:
-// "\x1b[1;"++color_code_above++"m"+message+"\x1b[0m"
-
-m = NetAddr("192.168.1.254", 9999)
-m.sendMsg("/amelia", "good amelia message: (white on blue)", "additional information");
-m.sendMsg("/alert", "good alert message: (white on red)", "additional information");
-m.sendMsg("/sensor", "good sensor reading (white on green)", "additional information");
-
-
-// color changing
-m.sendMsg("/log", "good alert message: (red on black) ", "41");
-m.sendMsg("/log", "good sensor reading: ", "37;42");
-m.sendMsg("/log", "good amelia notification: (white on blue)", "37;44");
-
+// ===============
+// TEST EVENT RECORDER
+// ===============
 
 
 

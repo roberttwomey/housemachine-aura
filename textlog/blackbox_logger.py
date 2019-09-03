@@ -325,10 +325,16 @@ while True:
 
                     if address.startswith("/amelia"):
                     	os.write(tty, '\x1b[1;37;44m'+data[1] +'\x1b[0m')
+                        if(len(data)>2):
+                            os.write(tty, " "+" ".join(data[2:]))
                     elif address.startswith("/alert"):
                         os.write(tty, '\x1b[1;41m'+data[1] +'\x1b[0m')
+                        if(len(data)>2):
+                            os.write(tty, " "+" ".join(data[2:]))
                     elif address.startswith("/sensor"):
                         os.write(tty, '\x1b[1;37;42m'+data[1] +'\x1b[0m')
+                        if(len(data)>2):
+                            os.write(tty, " "+" ".join(data[2:]))
                     elif address.startswith("/log"):
                         os.write(tty, '\x1b[1;'+data[2]+'m'+data[1] +'\x1b[0m')
                     else:
