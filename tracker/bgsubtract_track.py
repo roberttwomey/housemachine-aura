@@ -186,9 +186,9 @@ if __name__ == '__main__':
 		if frame is None:
 			break
 
-		outputframe = cv2.resize(frame, (outwidth, outheight))
+		analysisframe = cv2.resize(frame, (outwidth, outheight))
 
-		maskedframe = cv2.bitwise_and(outputframe, outputframe, mask = circlemask)
+		maskedframe = cv2.bitwise_and(analysisframe, analysisframe, mask = circlemask)
 
 		# frame = cv2.fisheye.undistortImage(frame, K, D=D, Knew=Knew)
 
@@ -226,7 +226,7 @@ if __name__ == '__main__':
 						# cv2.drawContours(frame, [cnt], 0, (127, 255, 0), 3)
 						# cv2.drawContours(frame, [cnt], 0, (64, 255, 0), 3)
 						cv2.drawContours(frame, [contour], 0, (0, 255, 0), 3)
-						# cv2.drawContours(outputframe, [contour], 0, (0, 255, 0), 3)
+						# cv2.drawContours(analysisframe, [contour], 0, (0, 255, 0), 3)
 
 					else:
 						largecnt = []
@@ -240,6 +240,7 @@ if __name__ == '__main__':
 						# cv2.drawContours(frame, [cnt], 0, (127, 255, 0), 6)
 						# cv2.drawContours(frame, [cnt], 0, (64, 255, 0), int(width/213))
 						cv2.drawContours(frame, [contour], 0, (0, 255, 0), int(width/213))
+						# cv2.drawContours(analysisframe, [contour], 0, (0, 255, 0), int(width/213))
 
 					# perimeter = cv2.arcLength(cnt,True)
 
@@ -276,7 +277,7 @@ if __name__ == '__main__':
 				#	# blob was too small or too big
 				# 	print("too large", area)
 
-		# masked = cv2.bitwise_and(outputframe, outputframe, mask=fgmask)
+		# masked = cv2.bitwise_and(analysisframe, analysisframe, mask=fgmask)
 
 		# cv2.addWeighted(trails, 1.0, frame, 0.0, 0.0, frame)
 
@@ -298,6 +299,7 @@ if __name__ == '__main__':
 				
 				# draw trails on output frame
 				cv2.line(frame, (np.float32(trail[i-1][0]), np.float32(trail[i-1][1])), (np.float32(trail[i][0]), np.float32(trail[i][1])), (0, 0, 255), thickness, cv2.LINE_AA)
+				# cv2.line(analysisframe, (np.float32(trail[i-1][0]), np.float32(trail[i-1][1])), (np.float32(trail[i][0]), np.float32(trail[i][1])), (0, 0, 255), thickness, cv2.LINE_AA)
 
 				# if doDownsample:
 					# full size
@@ -305,7 +307,7 @@ if __name__ == '__main__':
 					# cv2.line(frame, (np.float32(pts[i-1][0]), np.float32(pts[i-1][1])), (np.float32(pts[i][0]), np.float32(pts[i][1])), (0, 0, 255), thickness, cv2.LINE_AA)
 				# else:
 					# reduced size
-					# cv2.line(outputframe, (np.float32(pts[i-1][0]), np.float32(pts[i-1][1])), (np.float32(pts[i][0]), np.float32(pts[i][1])), (0, 0, 255), thickness, cv2.LINE_AA)
+					# cv2.line(analysisframe, (np.float32(pts[i-1][0]), np.float32(pts[i-1][1])), (np.float32(pts[i][0]), np.float32(pts[i][1])), (0, 0, 255), thickness, cv2.LINE_AA)
 
 		# # make colored overlay of thresholded shape
 		# colthresh = cv2.cvtColor(thresh, cv2.COLOR_GRAY2BGR)
@@ -321,16 +323,15 @@ if __name__ == '__main__':
 
 		# if not fullResolution:
 		# 	# frame = cv2.resize(frame, (outwidth,outheight))
-		# 	frame = cv2.resize(outputframe, (outwidth,outheight))
+		# 	frame = cv2.resize(analysisframe, (outwidth,outheight))
 
 		if not doHeadless:
-			cv2.imshow('tracking',frame)
+			cv2.imshow('tracking', frame)
 			cv2.imshow('fgbg',fgmask)
 			cv2.imshow('mask',thresh)
 
 		if doWrite:
 			try:
-				# out.write(outputframe)
 				out.write(frame)
 
 			except:
