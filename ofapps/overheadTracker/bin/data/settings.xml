@@ -1,0 +1,34 @@
+<!-- video input -->
+<!-- <videofile>"/Volumes/Work/Projects/housemachine_aura/data/video/overhead_test_1536.avi"</videofile>
+ -->
+ <!-- <videofile>/Users/rtwomey/Desktop/overhead_test_960.mov</videofile> -->
+<videofile>overhead_test_960_good.mov</videofile>
+<usecamera>0</usecamera>
+<cameranum>1</cameranum>
+<fullscreen>0</fullscreen>
+
+<xtweak>-50</xtweak>
+
+<camwidth>1280</camwidth>
+<camheight>960</camheight>
+
+<!-- frame processing -->
+<blur>10.0</blur>
+
+<!-- bg fg segmentation-->
+<!-- <bglearningtime>1</bglearningtime> -->
+<bglearningtime>1</bglearningtime>
+<!-- <bgthresh>15</bgthresh> -->
+<bgthresh>15</bgthresh>
+<bgdilate>15</bgdilate>
+
+<!-- contour detection -->
+<!-- <minarea>600</minarea> -->
+<!-- <minarea>10000</minarea> -->
+<minarea>5000</minarea>
+<maxarea>300000</maxarea>
+
+<!-- tracking -->
+<trackpersistence>15</trackpersistence>
+<trackmaxdist>100</trackmaxdist>
+<!-- <trackmaxdist>50</trackmaxdist> -->
