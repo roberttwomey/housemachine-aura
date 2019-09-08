@@ -259,12 +259,12 @@ servsock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 servsock.bind((UDP_IP, UDP_PORT))
 servsock.setblocking(0)
 
-bcastAddr = "192.168.1.255"
-bsock = socket.socket(socket.AF_INET, # Internet
-                     socket.SOCK_DGRAM) # UDP
-bsock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-bsock.bind((bcastAddr, UDP_PORT))
-bsock.setblocking(0)
+#bcastAddr = "192.168.1.255"
+#bsock = socket.socket(socket.AF_INET, # Internet
+#                     socket.SOCK_DGRAM) # UDP
+#bsock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+#bsock.bind((bcastAddr, UDP_PORT))
+#bsock.setblocking(0)
 
 print("Listening for UDP messages at",UDP_IP,"port",UDP_PORT)
 # print("Listening for Broadcast messages at",bcastAddr,"port",UDP_PORT)
@@ -336,7 +336,7 @@ while True:
                         if(len(data)>2):
                             os.write(tty, " "+" ".join(data[2:]))
                     elif address.startswith("/log"):
-                        os.write(tty, '\x1b[1;'+data[2]+'m'+data[1] +'\x1b[0m')
+                        os.write(tty, data[1])
                     else:
                         os.write(tty, address[1:])
                     
