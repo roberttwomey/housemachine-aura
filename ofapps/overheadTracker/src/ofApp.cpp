@@ -68,7 +68,8 @@ void Trail::draw_black() {
 void ofApp::setup(){
     ofSetVerticalSync(true);
     ofEnableAntiAliasing();
-
+    ofHideCursor();
+    
     loadXMLSettings("settings.xml");
     bShowThreshold = false;
 
@@ -168,19 +169,18 @@ void ofApp::update(){
         if(bUseCamera) {
             background.update(vidGrabber, thresholded);
         } else {
-            // background.update(vidPlayer, thresholded);
+            background.update(vidPlayer, thresholded);
 
-
-            Mat cImage, fgmask, shadowLessMask;
-            ofxCv::copy(vidPlayer, cImage);
-            // ofxCv::imitate(thresholded, vidGrabber.getPixels(), CV_8UC1); //CV_8UC3);//
 
             // MOG2 example
             // https://github.com/naus3a/ofxCvMOG2/blob/master/src/ofxCvMOG2.cpp
-            bgfg.operator()(cImage, fgmask);
-            // ofxCv::toOf(fgmask, thresholded);
-            ofxCv::threshold(fgmask, shadowLessMask, 254);
-            ofxCv::toOf(shadowLessMask, thresholded);
+            // Mat cImage, fgmask, shadowLessMask;
+            // ofxCv::copy(vidPlayer, cImage);
+            
+            // bgfg.operator()(cImage, fgmask);
+
+            // ofxCv::threshold(fgmask, shadowLessMask, 254);
+            // ofxCv::toOf(shadowLessMask, thresholded);
             
         }
 
