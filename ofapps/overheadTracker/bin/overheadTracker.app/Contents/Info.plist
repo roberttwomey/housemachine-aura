@@ -20,5 +20,7 @@
   <integer>0</integer>
   <key>IFMinorVersion</key>
   <integer>1</integer>
+  <key>NSCameraUsageDescription</key>
+  <string>Need to access your camera to capture a picture and record a video.</string>
 </dict>
 </plist>
