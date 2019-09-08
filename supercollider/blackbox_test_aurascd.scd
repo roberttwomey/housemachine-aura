@@ -7,7 +7,8 @@
 // ===============
 
 // connect to text logger rpi
-m = NetAddr("192.168.1.254", 9999)
+// m = NetAddr("192.168.1.254", 9999)
+m = NetAddr("10.1.10.139", 9999)
 
 
 //--------------
@@ -48,6 +49,19 @@ m = NetAddr("192.168.1.254", 9999)
 m.sendMsg("/amelia", "amelia:", "(white on blue)", "additional information");
 m.sendMsg("/alert", "alert:", "(white on red)", "additional information");
 m.sendMsg("/sensor", "sensor:", "(white on green)", "additional information", "more information");
+m.sendMsg("/log", "testing some text", "more information");
+
+
+(
+m.sendMsg("/log", "\n|\\---/|
+| o_o |
+ \\_^_/");
+)
+
+
+m.sendMsg("/clear")
+m.sendMsg("/up", 3)
+
 
 # with newline
 m.sendMsg("/sensor", "sensor:", "(white on green)", "additional information", "more information\n");
@@ -83,7 +97,7 @@ m.sendMsg("/getnodeinfo");
 // ===============
 
 // blackbox address
-m = NetAddr("192.168.1.20", 9999);
+// m = NetAddr("192.168.1.20", 9999);
 // NetAddr.broadcastFlag = true;
 // m = NetAddr("192.168.1.255", 9999);
 
