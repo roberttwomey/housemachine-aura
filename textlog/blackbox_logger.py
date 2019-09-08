@@ -241,8 +241,7 @@ def closeLogfile():
 
 
 tty = os.open("/dev/tty1", os.O_RDWR)
-# os.write(tty, "this is fun")
-# os.system("clear")
+# clear the tty
 os.write(tty, b'\033c')
 
 # get IP for host
@@ -339,6 +338,10 @@ while True:
                         os.write(tty, data[1])
                         if(len(data)>2):
                             os.write(tty, " "+" ".join(data[2:]))
+                    elif address.startswith("/clear"):
+                        os.write(tty, b'\033c')
+                    elif address.startswith("/cicada"):
+                        os.write(tty, "      '-.       ,   ,       .-'\r\n         \\    _.-'\"'-._    /\r\n          \\  (_).---.(_)  /\r\n           '-/         \\-'\r\n             \\__.---.__/\r\n             / .'   '. \\\r\n         ,--(_;.-----.;_)--,\r\n        /   |  \\     /  |   \\\r\n       /   /;'-.'._.'.-';\\   \\\r\n    ,-'   /, \\~ \\-=-/ ~/ ,\\   '-,\r\n         ; ;  |~ '.' ~|  ; ;\r\n         |; '  \\=====/  ; ;|\r\n        /| ; ;_| === |_; ; |\\\r\n       / |  \\_/;= = =;\\_/  | \\\r\n     _/  | ; ;_ \\===/ _; ; |  \\_\r\n    `    |  \\_/ ;\\=/; \\_/  |    `\r\n         | \\_| ; ;|; ; |_/ |\r\n         ;\\_/ ; ;/ \\; ; \\_/;\r\n         ;/, ; ; | | ; ; ,\\;\r\n          ; ; ; /   \\ ; ; ;\r\n          \\; ; ;|   |; ; ;/\r\n           \\; ; /   \\ ; ;/\r\n            \\_.'     '._/\r\n ")
                     else:
                         os.write(tty, address[1:])
                     
