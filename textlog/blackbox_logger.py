@@ -337,6 +337,8 @@ while True:
                             os.write(tty, " "+" ".join(data[2:]))
                     elif address.startswith("/log"):
                         os.write(tty, data[1])
+                        if(len(data)>2):
+                            os.write(tty, " "+" ".join(data[2:]))
                     else:
                         os.write(tty, address[1:])
                     
