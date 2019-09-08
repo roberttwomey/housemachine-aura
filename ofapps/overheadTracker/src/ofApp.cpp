@@ -68,7 +68,8 @@ void Trail::draw_black() {
 void ofApp::setup(){
     ofSetVerticalSync(true);
     ofEnableAntiAliasing();
-
+    ofHideCursor();
+    
     loadXMLSettings("settings.xml");
     bShowThreshold = false;
 
