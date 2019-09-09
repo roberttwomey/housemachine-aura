@@ -3,7 +3,7 @@
  -->
  <!-- <videofile>/Users/rtwomey/Desktop/overhead_test_960.mov</videofile> -->
 <videofile>overhead_test_960_good.mov</videofile>
-<usecamera>1</usecamera>
+<usecamera>0</usecamera>
 <cameranum>0</cameranum>
 <fullscreen>0</fullscreen>
 
@@ -20,7 +20,7 @@
 <bglearningtime>1</bglearningtime>
 <!-- <bgthresh>15</bgthresh> -->
 <bgthresh>15</bgthresh>
-<bgdilate>5</bgdilate>
+<bgdilate>15</bgdilate>
 
 <!-- contour detection -->
 <!-- <minarea>600</minarea> -->
